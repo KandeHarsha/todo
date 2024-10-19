@@ -16,7 +16,7 @@ export default function TodoPage() {
   const todos = useSelector((state:RootState) => state.todoReducer.todos)
   const dispatch = useDispatch();
   const [newTodo, setNewTodo] = useState("")
-  const [editingId, setEditingId] = useState<any>(null)
+  const [editingId, setEditingId] = useState<string | null>(null)
   const [editText, setEditText] = useState("")
   
   useEffect(() =>{
