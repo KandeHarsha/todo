@@ -54,7 +54,7 @@ export default function SignIn() {
         </CardContent>
         <CardFooter className="flex justify-center">
           <p className="text-sm text-muted-foreground">
-            Don't have an account? <a href="/register" className="text-primary hover:underline">Sign up</a>
+            Don`&apos;t have an account? <a href="/register" className="text-primary hover:underline">Sign up</a>
           </p>
         </CardFooter>
       </Card>
