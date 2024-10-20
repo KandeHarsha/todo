@@ -12,7 +12,6 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormMessage,
@@ -28,8 +27,6 @@ const loginSchema = z.object({
 type LoginValues = z.infer<typeof loginSchema>
 
 export default function SignIn() {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const dispatch = useDispatch();
 
@@ -94,7 +91,7 @@ export default function SignIn() {
                 )}
               />
               <Button type="submit" className="w-full" disabled={!isValid || isSubmitting}>
-                {isSubmitting ? 'Signing up...' : 'Sign Up'}
+                {isSubmitting ? 'Logging in...' : 'Login'}
               </Button>
             </form>
           </Form>
