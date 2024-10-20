@@ -16,6 +16,9 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Label } from '@/components/ui/label'
+import { register } from '@/lib/features/auth/authSlice'
+import { useDispatch } from 'react-redux'
+import Protected from '@/components/AuthLayout'
 
 const signUpSchema = z.object({
   name: z.string().min(1, 'Name is required'),
@@ -32,6 +35,7 @@ type SignUpValues = z.infer<typeof signUpSchema>
 
 export default function SignUp() {
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const dispatch = useDispatch();
 
   const form = useForm<SignUpValues>({
     resolver: zodResolver(signUpSchema),
@@ -47,8 +51,15 @@ export default function SignUp() {
 
   const onSubmit = async (values: SignUpValues) => {
     setIsSubmitting(true)
-    // Simulate an API call
-    await new Promise(resolve => setTimeout(resolve, 1000))
+    const payload = {
+      userData: {
+        name: values.name,
+        email: values.email,
+        username: values.username,
+        phone: values.phone
+      }
+    }
+    dispatch(register(payload))
     console.log('Sign up attempted with:', values)
     setIsSubmitting(false)
   }
@@ -56,93 +67,95 @@ export default function SignUp() {
   const { isValid } = form.formState
 
   return (
-    <Card className="w-full max-w-md mx-auto">
-      <CardHeader>
-        <CardTitle>Sign Up</CardTitle>
-        <CardDescription>Create your account to get started</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <Label>Name</Label>
-                  <FormControl>
-                    <Input placeholder="John Doe" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="username"
-              render={({ field }) => (
-                <FormItem>
-                  <Label>Username</Label>
-                  <FormControl>
-                    <Input placeholder="johndoe" {...field} />
-                  </FormControl>
-                  <FormDescription>
-                    This is your public display name.
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="phone"
-              render={({ field }) => (
-                <FormItem>
-                  <Label>Phone Number</Label>
-                  <FormControl>
-                    <Input type="tel" placeholder="1234567890" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <Label>Email</Label>
-                  <FormControl>
-                    <Input type="email" placeholder="john@example.com" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <Label>Password</Label>
-                  <FormControl>
-                    <Input type="password" placeholder="••••••••" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button type="submit" className="w-full" disabled={!isValid || isSubmitting}>
-              {isSubmitting ? 'Signing up...' : 'Sign Up'}
-            </Button>
-          </form>
-        </Form>
-      </CardContent>
-      <CardFooter className="flex justify-center">
-        <p className="text-sm text-muted-foreground">
-          Already have an account? <a href="#" className="text-primary hover:underline">Sign in</a>
-        </p>
-      </CardFooter>
-    </Card>
+    <Protected authentication={false}>
+      <Card className="w-full max-w-md mx-auto">
+        <CardHeader>
+          <CardTitle>Sign Up</CardTitle>
+          <CardDescription>Create your account to get started</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <Label>Name</Label>
+                    <FormControl>
+                      <Input placeholder="John Doe" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="username"
+                render={({ field }) => (
+                  <FormItem>
+                    <Label>Username</Label>
+                    <FormControl>
+                      <Input placeholder="johndoe" {...field} />
+                    </FormControl>
+                    <FormDescription>
+                      This is your public display name.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="phone"
+                render={({ field }) => (
+                  <FormItem>
+                    <Label>Phone Number</Label>
+                    <FormControl>
+                      <Input type="tel" placeholder="1234567890" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <Label>Email</Label>
+                    <FormControl>
+                      <Input type="email" placeholder="john@example.com" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <Label>Password</Label>
+                    <FormControl>
+                      <Input type="password" placeholder="••••••••" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <Button type="submit" className="w-full" disabled={!isValid || isSubmitting}>
+                {isSubmitting ? 'Signing up...' : 'Sign Up'}
+              </Button>
+            </form>
+          </Form>
+        </CardContent>
+        <CardFooter className="flex justify-center">
+          <p className="text-sm text-muted-foreground">
+            Already have an account? <a href="#" className="text-primary hover:underline">Sign in</a>
+          </p>
+        </CardFooter>
+      </Card>
+    </Protected>
   )
 }
