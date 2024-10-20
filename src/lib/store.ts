@@ -1,9 +1,13 @@
 "use client"
 import { configureStore } from '@reduxjs/toolkit';
-import todoReducer from "./features/todos/todosSlice"
+import todoSlice from "./features/todos/todosSlice"
+import authSlice from "./features/auth/authSlice"
 
 export const makeStore = () => configureStore({
-  reducer: {todoReducer}
+  reducer: {
+    todo: todoSlice,
+    auth: authSlice
+  }
 })
 
 export type AppStore = ReturnType<typeof makeStore>
