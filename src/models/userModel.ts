@@ -7,6 +7,12 @@ const UserSchema = new mongoose.Schema({
     unique: true,
     trim: true
   },
+  name: {
+    type: String,
+    required: [true, "Plase provide username"],
+    unique: true,
+    trim: true
+  },
   email: {
     type: String,
     required: [true, "Plase provide email"],
@@ -23,10 +29,10 @@ const UserSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
-  // role: {
-  //   type: String,
-  //   required: [true, "Plase provide role"],
-  // },
+  role: {
+    type: String,
+    required: [true, "Plase provide role"],
+  },
   forgetPasswordToken: String,
   forgetPasswordTokenExpery: Date,
   verifyToken: String,

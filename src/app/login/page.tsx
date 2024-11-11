@@ -43,13 +43,27 @@ export default function SignIn() {
   const onSubmit = async (values: LoginValues) => {
     setIsSubmitting(true)
     const payload = {
-      userData: {
-        email: values.email
-      }
+      email: values.email,
+      password: values.password
     }
-    dispatch(login(payload))
     console.log('Sign up attempted with:', values)
-    setIsSubmitting(false)
+    try {
+      const response = await fetch('api/users/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      })
+      if (!response.ok) {
+        throw new Error('Failed to Login')
+      }
+      dispatch(login(payload))
+      setIsSubmitting(false)
+    } catch (error) {
+      console.error('Sign up failed:', error);      
+    }
+    
   }
 
   return (

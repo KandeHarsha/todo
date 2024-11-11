@@ -1,19 +1,27 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-interface UserData {
+export interface UserData {
   name?: string
   email: string
   username?: string
   phone?: string
+  role?: string
+  password: string
 }
 interface Auth {
   status: boolean
   userData: UserData | null
+  isLoading: boolean
+  isError: boolean
+  error: string | null
 }
 
 const initialState: Auth = {
   status: false,
-  userData: null
+  userData: null,
+  isLoading: false,
+  isError: false,
+  error: null,
 }
 
 export const authSlice = createSlice({
@@ -34,6 +42,34 @@ export const authSlice = createSlice({
     }
   }
 })
+
+// export const register = createAsyncThunk<
+//   { userData: UserData },   // Return type on success
+//   UserData                  // Argument type
+// >(
+//   'auth/register',
+//   async (userData, { rejectWithValue }) => {
+//     try {
+//       const response = await fetch('/api/users/register', {
+//         method: 'POST',
+//         headers: {
+//           'Content-Type': 'application/json',
+//         },
+//         body: JSON.stringify({ userData }),
+//       });
+
+//       if (!response.ok) {
+//         throw new Error('Failed to register');
+//       }
+
+//       const data = await response.json();
+//       return { userData: data }; // Ensure it matches the expected return type
+//     } catch (error) {
+//       return rejectWithValue((error as Error).message);
+//     }
+//   }
+// );
+
 
 export const {login, logout, register} = authSlice.actions
 export default authSlice.reducer
