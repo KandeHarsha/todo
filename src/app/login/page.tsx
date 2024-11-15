@@ -67,7 +67,7 @@ export default function SignIn() {
   }
 
   return (
-    <Protected authentication={false}>
+    // <Protected authentication={false}>
       <div className='flex justify-center items-center h-screen'>
         <Card className="w-full max-w-md mx-auto">
           <CardHeader>
@@ -117,6 +117,6 @@ export default function SignIn() {
           </CardFooter>
         </Card>
       </div>
-    </Protected>
+    // </Protected>
   )
 }

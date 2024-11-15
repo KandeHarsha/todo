@@ -89,7 +89,7 @@ export default function SignUp() {
   const { isValid } = form.formState
 
   return (
-    <Protected authentication={false}>
+    // <Protected authentication={false}>
       <Card className="w-full max-w-md mx-auto">
         <CardHeader>
           <CardTitle>Sign Up</CardTitle>
@@ -203,6 +203,6 @@ export default function SignUp() {
           </p>
         </CardFooter>
       </Card>
-    </Protected>
+    // </Protected>
   )
 }
