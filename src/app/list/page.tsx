@@ -9,7 +9,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { useDispatch, useSelector } from "react-redux"
 import {addTodo, deleteTodo, editTodo, toggleTodoCompleted}  from "@/lib/features/todos/todosSlice"
 import { RootState } from "@/lib/store";
-import Protected from "@/components/AuthLayout"
+// import Protected from "@/components/AuthLayout"
 
 export default function TodoPage() {
   const inputRef = useRef<HTMLInputElement>(null);

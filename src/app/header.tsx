@@ -15,7 +15,8 @@ import { useDispatch } from 'react-redux'
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false)
-  const [user, setUser] = useState<any>(null)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [user, setUser] = useState<any | null>(null)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -54,7 +55,7 @@ export default function Header() {
       const data = await response.json()
       console.log('data', data)
       return data.data
-    } catch (error: any) {
+    } catch (error) {
       console.log('error', error)
     }
   } 

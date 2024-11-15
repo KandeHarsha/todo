@@ -16,9 +16,9 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Label } from '@/components/ui/label'
-import { register, UserData } from '@/lib/features/auth/authSlice'
+import { register } from '@/lib/features/auth/authSlice'
 import { useDispatch } from 'react-redux'
-import Protected from '@/components/AuthLayout'
+// import Protected from '@/components/AuthLayout'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 
 const signUpSchema = z.object({
