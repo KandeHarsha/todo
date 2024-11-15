@@ -78,7 +78,7 @@ export default function TodoPage() {
   };
 
   return (
-    <Protected authentication={true}>
+    // <Protected authentication={true}>
       <div className="container mx-auto p-4 max-w-md">
         <h1 className="text-2xl font-bold mb-4">Todo List</h1>
         <div className="flex mb-4">
@@ -155,6 +155,6 @@ export default function TodoPage() {
           ))}
         </div>
       </div>
-    </Protected>
+    // </Protected>
   )
 }

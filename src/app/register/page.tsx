@@ -16,9 +16,10 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Label } from '@/components/ui/label'
-import { register } from '@/lib/features/auth/authSlice'
+import { register, UserData } from '@/lib/features/auth/authSlice'
 import { useDispatch } from 'react-redux'
 import Protected from '@/components/AuthLayout'
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 
 const signUpSchema = z.object({
   name: z.string().min(1, 'Name is required'),
@@ -29,6 +30,7 @@ const signUpSchema = z.object({
   .regex(/^\d+$/, 'Phone number must contain only digits')
   .length(10, 'Phone number must be exactly 10 digits')
   .optional(),
+  role: z.string().optional(),
 })
 
 type SignUpValues = z.infer<typeof signUpSchema>
@@ -46,28 +48,48 @@ export default function SignUp() {
       email: '',
       password: '',
       phone: '',
+      role: 'user',
     },
   })
 
   const onSubmit = async (values: SignUpValues) => {
-    setIsSubmitting(true)
+    setIsSubmitting(true);
     const payload = {
-      userData: {
         name: values.name,
         email: values.email,
         username: values.username,
-        phone: values.phone
-      }
+        phone: values.phone,
+        role: values.role,
+        password: values.password,
     }
-    dispatch(register(payload))
-    console.log('Sign up attempted with:', values)
-    setIsSubmitting(false)
-  }
+    try {
+        const response = await fetch('/api/users/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload),
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to register');
+        }
+
+        const result = await response.json();
+        dispatch(register(result));  // Dispatch the success action with the user data
+        console.log('Sign up successful:', result);
+    } catch (error) {
+        console.error('Sign up failed:', error);
+    } finally {
+        setIsSubmitting(false);
+    }
+};
+
 
   const { isValid } = form.formState
 
   return (
-    <Protected authentication={false}>
+    // <Protected authentication={false}>
       <Card className="w-full max-w-md mx-auto">
         <CardHeader>
           <CardTitle>Sign Up</CardTitle>
@@ -131,6 +153,31 @@ export default function SignUp() {
                   </FormItem>
                 )}
               />
+              <FormField 
+                control={form.control}
+                name="role"
+                render={({ field }) => (
+                  <FormItem>
+                    <Label>Role</Label>
+                    <FormControl>
+                      <Select onValueChange={field.onChange}  // Handle change with field.onChange
+                        value={field.value}
+                      >
+                        <SelectTrigger className="w-[180px]">
+                          <SelectValue placeholder="Select a role" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectGroup>
+                            <SelectItem value="admin">Admin</SelectItem>
+                            <SelectItem value="user">User</SelectItem>
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <FormField
                 control={form.control}
                 name="password"
@@ -156,6 +203,6 @@ export default function SignUp() {
           </p>
         </CardFooter>
       </Card>
-    </Protected>
+    // </Protected>
   )
 }

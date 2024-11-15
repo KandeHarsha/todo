@@ -43,17 +43,31 @@ export default function SignIn() {
   const onSubmit = async (values: LoginValues) => {
     setIsSubmitting(true)
     const payload = {
-      userData: {
-        email: values.email
-      }
+      email: values.email,
+      password: values.password
     }
-    dispatch(login(payload))
     console.log('Sign up attempted with:', values)
-    setIsSubmitting(false)
+    try {
+      const response = await fetch('api/users/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      })
+      if (!response.ok) {
+        throw new Error('Failed to Login')
+      }
+      dispatch(login(payload))
+      setIsSubmitting(false)
+    } catch (error) {
+      console.error('Sign up failed:', error);      
+    }
+    
   }
 
   return (
-    <Protected authentication={false}>
+    // <Protected authentication={false}>
       <div className='flex justify-center items-center h-screen'>
         <Card className="w-full max-w-md mx-auto">
           <CardHeader>
@@ -103,6 +117,6 @@ export default function SignIn() {
           </CardFooter>
         </Card>
       </div>
-    </Protected>
+    // </Protected>
   )
 }
